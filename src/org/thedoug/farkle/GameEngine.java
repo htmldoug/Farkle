@@ -33,20 +33,14 @@ public class GameEngine {
     public GameResult run() {
         while (!somePlayerHasWon()) {
             for (Player player : players) {
-//                System.out.println(player + "'s turn");
                 GameState gameState = rollAndStuff(new GameState());
-//                System.out.println(player + ": Initial roll: " + gameState);
 
                 while(gameState.canRollAgain() && player.shouldRollAgain(gameState)) {
                     gameState = rollAndStuff(gameState);
-//                    System.out.println(player + ": Additional roll: " + gameState);
                 }
 
                 updateScoreForTurn(player, gameState.turnInfo());
-//                System.out.println(player + "'s score: " + scores.get(player));
             }
-
-            System.out.flush();
         }
 
         return new GameResult(scores);
