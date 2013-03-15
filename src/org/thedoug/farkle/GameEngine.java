@@ -40,6 +40,7 @@ public class GameEngine {
                 }
 
                 updateScoreForTurn(player, gameState.turnInfo());
+                if (hasWon(player)) break;
             }
         }
 
@@ -91,13 +92,13 @@ public class GameEngine {
         return rolls;
     }
 
-    private boolean playerHasWon(Player player) {
+    private boolean hasWon(Player player) {
         return scores.get(player) >= MAX_SCORE;
     }
 
     private boolean somePlayerHasWon() {
         for (Player player: players) {
-            if (playerHasWon(player)) {
+            if (hasWon(player)) {
                 return true;
             }
         }
