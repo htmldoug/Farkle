@@ -1,6 +1,5 @@
 package org.thedoug.farkle;
 
-
 import org.thedoug.farkle.model.GameResult;
 import org.thedoug.farkle.model.LukeRulesScorer;
 import org.thedoug.farkle.model.RandomRollStrategy;
@@ -15,7 +14,6 @@ public class Farkle {
         LukeRulesScorer scorer = new LukeRulesScorer(rollStrategy);
 
         Player[] players = new Player[]{
-                new RollIfAtLeastNRemainingDicePlayer(1),
                 new RollIfAtLeastNRemainingDicePlayer(2),
                 new RollIfAtLeastNRemainingDicePlayer(3), // Champion!
                 new RollIfAtLeastNRemainingDicePlayer(4),
