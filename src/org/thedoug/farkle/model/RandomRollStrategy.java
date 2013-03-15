@@ -21,6 +21,6 @@ public class RandomRollStrategy implements RollStrategy {
     }
 
     private int generateNumberInRange(int min, int max) {
-        return ((int) Math.round(Math.random() * (max - 1))) + min;
+        return (int) (Math.random() * (max)) + min;
     }
 }
