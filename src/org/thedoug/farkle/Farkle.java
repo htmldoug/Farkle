@@ -14,7 +14,7 @@ public class Farkle {
         RandomRollStrategy rollStrategy = new RandomRollStrategy();
         LukeRulesScorer scorer = new LukeRulesScorer(rollStrategy);
 
-        Player[] players = new Player[] {
+        Player[] players = new Player[]{
                 new RollIfAtLeastNRemainingDicePlayer(1),
                 new RollIfAtLeastNRemainingDicePlayer(2),
                 new RollIfAtLeastNRemainingDicePlayer(3), // Champion!
@@ -26,7 +26,7 @@ public class Farkle {
         };
 
         Map<Player, Integer> score = new LinkedHashMap<Player, Integer>();
-        for (Player player: players) {
+        for (Player player : players) {
             score.put(player, 0);
         }
 
