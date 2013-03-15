@@ -1,7 +1,9 @@
 package org.thedoug.farkle.model;
 
 public interface Turn {
-    public int getScoredPoints();
+    int getScoredPoints();
 
-    public int getRemainingDice();
+    int getRemainingDice();
+
+    int getRollNumber();
 }
