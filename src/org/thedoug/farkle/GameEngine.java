@@ -47,9 +47,7 @@ public class GameEngine {
     }
 
     private void updateScoreForTurn(Player player, Turn turnInfo) {
-        Integer oldScore = scores.get(player);
-        int pointsForTurn = turnInfo.getScoredPoints();
-        Integer newScore = oldScore + pointsForTurn;
+        int newScore = scores.get(player) + turnInfo.getScoredPoints();
         scores.put(player, newScore);
     }
 
@@ -93,17 +91,16 @@ public class GameEngine {
         return rolls;
     }
 
-    private Player getWinningPlayer() {
-        for (Player player: players) {
-            Integer score = scores.get(player);
-            if (score >= MAX_SCORE) {
-                return player;
-            }
-        }
-        return null;
+    private boolean playerHasWon(Player player) {
+        return scores.get(player) >= MAX_SCORE;
     }
 
     private boolean somePlayerHasWon() {
-        return getWinningPlayer() != null;
+        for (Player player: players) {
+            if (playerHasWon(player)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
