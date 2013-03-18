@@ -1,9 +1,17 @@
 package org.thedoug.farkle.model;
 
+import java.util.Random;
+
 public class RandomRollStrategy implements RollStrategy {
 
     private final int MIN = 1;
     private final int MAX = 6;
+
+    private Random random;
+
+    public RandomRollStrategy() {
+        random = new Random();
+    }
 
     @Override
     public int rollSingleDie() {
@@ -21,6 +29,6 @@ public class RandomRollStrategy implements RollStrategy {
     }
 
     private int generateNumberInRange(int min, int max) {
-        return (int) (Math.random() * (max)) + min;
+        return random.nextInt(MAX) + min;
     }
 }
