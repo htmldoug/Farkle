@@ -63,7 +63,7 @@ public class GameEngine {
     }
 
     private GameState rollAndStuff(GameState previous) {
-        if (!previous.canRollAgain()) throw new IllegalArgumentException();
+        assert previous.canRollAgain();
 
         int nextRollIteration = previous.turnInfo().getRollIteration() + 1;
 
