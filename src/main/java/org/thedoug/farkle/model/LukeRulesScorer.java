@@ -7,10 +7,10 @@ import java.util.Map;
 public class LukeRulesScorer implements Scorer {
     private static final int MAX_ROLLABLE_DICE = 5;
 
-    private RollStrategy rollStrategy;
+    private Roller roller;
 
-    public LukeRulesScorer(RollStrategy rollStrategy) {
-        this.rollStrategy = rollStrategy;
+    public LukeRulesScorer(Roller roller) {
+        this.roller = roller;
     }
 
     @Override
@@ -76,7 +76,7 @@ public class LukeRulesScorer implements Scorer {
 
     private Map<Integer, Integer> countDice(List<Integer> rolls) {
         Map<Integer, Integer> counts = new HashMap<Integer, Integer>();
-        for (int i = rollStrategy.getMinValue(); i <= rollStrategy.getMaxValue(); i++) {
+        for (int i = roller.getMinValue(); i <= roller.getMaxValue(); i++) {
             counts.put(i, 0);
         }
         for (Integer roll: rolls) {

@@ -2,14 +2,14 @@ package org.thedoug.farkle.model;
 
 import java.util.Random;
 
-public class RandomRollStrategy implements RollStrategy {
+public class RandomRoller implements Roller {
 
     private final int MIN = 1;
     private final int MAX = 6;
 
     private Random random;
 
-    public RandomRollStrategy() {
+    public RandomRoller() {
         random = new Random();
     }
 

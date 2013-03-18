@@ -2,7 +2,7 @@ package org.thedoug.farkle;
 
 import org.thedoug.farkle.model.GameResult;
 import org.thedoug.farkle.model.LukeRulesScorer;
-import org.thedoug.farkle.model.RandomRollStrategy;
+import org.thedoug.farkle.model.RandomRoller;
 import org.thedoug.farkle.player.*;
 
 import java.util.LinkedHashMap;
@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class Farkle {
     public static void main(String[] args) {
-        RandomRollStrategy rollStrategy = new RandomRollStrategy();
+        RandomRoller rollStrategy = new RandomRoller();
         LukeRulesScorer scorer = new LukeRulesScorer(rollStrategy);
 
         Player[] players = new Player[]{

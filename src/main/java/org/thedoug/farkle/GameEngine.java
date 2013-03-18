@@ -17,15 +17,15 @@ public class GameEngine {
 
     private static final int MAX_SCORE = 10000;
 
-    private RollStrategy rollStrategy;
+    private Roller roller;
 
     private Scorer scorer;
 
     private Map<Player, Integer> scores;
 
-    public GameEngine(RollStrategy rollStrategy, Scorer scorer, Player... players) {
+    public GameEngine(Roller roller, Scorer scorer, Player... players) {
         this.players = players;
-        this.rollStrategy = rollStrategy;
+        this.roller = roller;
         this.scorer = scorer;
         this.scores = getInitialScores(players);
     }
@@ -86,7 +86,7 @@ public class GameEngine {
     private List<Integer> rollSomeDice(int diceToRoll) {
         List<Integer> rolls = new ArrayList<Integer>();
         for (int i = 0; i < diceToRoll; i++) {
-            int result = rollStrategy.rollSingleDie();
+            int result = roller.rollSingleDie();
             rolls.add(result);
         }
         return rolls;
