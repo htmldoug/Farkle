@@ -6,5 +6,4 @@
 *.ear
 
 .idea
-Farkle.iml
-**/org/thedoug/farkle/doug/
+*.iml
