@@ -1,6 +1,6 @@
 Farkle
 ======
-Simulation of a variant of [Farkle](http://en.wikipedia.org/wiki/Farkle).
+Simulation of a [Farkle](http://en.wikipedia.org/wiki/Farkle) variant.
 
 Modules
 -------
