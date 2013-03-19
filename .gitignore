@@ -1,7 +1,7 @@
 *.class
 
 # Package Files #
-*.jar
+# *.jar # need for compiled artifacts.
 *.war
 *.ear
 
