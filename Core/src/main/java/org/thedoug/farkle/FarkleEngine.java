@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Runs the game against the provided players.
  */
-public class GameEngine {
+public class FarkleEngine {
 
     private Player[] players;
 
@@ -23,14 +23,14 @@ public class GameEngine {
 
     private Map<Player, Integer> scores;
 
-    public GameEngine(Roller roller, Scorer scorer, Player... players) {
+    public FarkleEngine(Roller roller, Scorer scorer, Player... players) {
         this.players = players;
         this.roller = roller;
         this.scorer = scorer;
         this.scores = getInitialScores(players);
     }
 
-    public GameResult run() {
+    public FarkleResult run() {
         while (!somePlayerHasWon()) {
             for (Player player : players) {
                 GameState gameState = rollAndStuff(new GameState());
@@ -44,7 +44,7 @@ public class GameEngine {
             }
         }
 
-        return new GameResult(scores);
+        return new FarkleResult(scores);
     }
 
     private void updateScoreForTurn(Player player, Turn turnInfo) {

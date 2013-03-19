@@ -5,13 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 public class LukeRulesScorer implements Scorer {
-    private static final int MAX_ROLLABLE_DICE = 5;
 
-    private Roller roller;
-
-    public LukeRulesScorer(Roller roller) {
-        this.roller = roller;
-    }
+    public static final int MAX_ROLLABLE_DICE = 5;
+    public static final int MIN_DIE_VALUE = 1;
+    public static final int MAX_DIE_VALUE = 6;
 
     @Override
     public ScoringResult score(List<Integer> rolls) {
@@ -76,7 +73,7 @@ public class LukeRulesScorer implements Scorer {
 
     private Map<Integer, Integer> countDice(List<Integer> rolls) {
         Map<Integer, Integer> counts = new HashMap<Integer, Integer>();
-        for (int i = roller.getMinValue(); i <= roller.getMaxValue(); i++) {
+        for (int i = MIN_DIE_VALUE; i <= MAX_DIE_VALUE; i++) {
             counts.put(i, 0);
         }
         for (Integer roll: rolls) {

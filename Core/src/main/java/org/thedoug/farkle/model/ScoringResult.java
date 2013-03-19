@@ -16,4 +16,9 @@ public class ScoringResult {
     public int getRemainingDice() {
         return remainingDice;
     }
+
+    @Override
+    public String toString() {
+        return "ScoringResult(" + score + ", " + remainingDice + ")";
+    }
 }

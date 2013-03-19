@@ -5,14 +5,14 @@ public class Turn {
     private int remainingDice = 5;
     private int rollIteration = 0;
 
-    public Turn() {
-    }
+        public Turn() {
+        }
 
-    public Turn(int scoredPoints, int remainingDice, int rollIteration) {
-        this.scoredPoints = scoredPoints;
-        this.remainingDice = remainingDice;
-        this.rollIteration = rollIteration;
-    }
+        public Turn(int scoredPoints, int remainingDice, int rollIteration) {
+            this.scoredPoints = scoredPoints;
+            this.remainingDice = remainingDice;
+            this.rollIteration = rollIteration;
+        }
 
     public int getScoredPoints() {
         return scoredPoints;

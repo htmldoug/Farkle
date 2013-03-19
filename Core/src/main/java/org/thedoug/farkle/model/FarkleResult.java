@@ -4,10 +4,10 @@ import org.thedoug.farkle.player.Player;
 
 import java.util.Map;
 
-public class GameResult {
+public class FarkleResult {
     private Map<Player, Integer> scores;
 
-    public GameResult(Map<Player, Integer> scores) {
+    public FarkleResult(Map<Player, Integer> scores) {
         this.scores = scores;
     }
 
@@ -30,7 +30,7 @@ public class GameResult {
 
     @Override
     public String toString() {
-        return "GameResult{" +
+        return "FarkleResult{" +
                 "scores=" + scores +
                 '}';
     }
