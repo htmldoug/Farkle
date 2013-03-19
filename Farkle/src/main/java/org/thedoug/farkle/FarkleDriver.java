@@ -11,14 +11,14 @@ import org.thedoug.farkle.player.RollIfAtLeastNRemainingDicePlayer;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class Farkle {
+public class FarkleDriver {
     public static void main(String[] args) {
         RandomRoller rollStrategy = new RandomRoller();
         LukeRulesScorer scorer = new LukeRulesScorer();
 
         Player[] players = new Player[]{
-                InstrumentedPlayer.from(new DougPlayer()),
-                InstrumentedPlayer.from(new RollIfAtLeastNRemainingDicePlayer(3)), // Champion!
+                InstrumentedPlayer.instrument(new DougPlayer()),
+                InstrumentedPlayer.instrument(new RollIfAtLeastNRemainingDicePlayer(3)), // Champion!
         };
 
         Map<Player, Integer> scores = new LinkedHashMap<Player, Integer>();
