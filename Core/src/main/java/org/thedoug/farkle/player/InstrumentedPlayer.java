@@ -40,5 +40,7 @@ public class InstrumentedPlayer implements Player {
                 '}';
     }
 
-    public static InstrumentedPlayer from(Player player) {return new InstrumentedPlayer(player);}
+    public static InstrumentedPlayer instrument(Player player) {
+        return new InstrumentedPlayer(player);
+    }
 }
