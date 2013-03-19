@@ -43,4 +43,12 @@ public class InstrumentedPlayer implements Player {
     public static InstrumentedPlayer instrument(Player player) {
         return new InstrumentedPlayer(player);
     }
+
+    public static InstrumentedPlayer[] instrumentAll(Player[] players) {
+        InstrumentedPlayer[] instrumentedPlayers = new InstrumentedPlayer[players.length];
+        for (int i = 0; i < players.length; i++) {
+            instrumentedPlayers[i] = instrument(players[i]);
+        }
+        return instrumentedPlayers;
+    }
 }
