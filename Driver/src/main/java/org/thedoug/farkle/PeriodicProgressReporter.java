@@ -1,7 +1,7 @@
 package org.thedoug.farkle;
 
 public class PeriodicProgressReporter {
-    public static final int DEFAULT_REPORT_DURATION_MILLIS = 5000;
+    public static final int DEFAULT_REPORT_DURATION_MILLIS = 2000;
     private final int reportDurationMillis;
 
     private long lastReportTimestamp = System.currentTimeMillis();
