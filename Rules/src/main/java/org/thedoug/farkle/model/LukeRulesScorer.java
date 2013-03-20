@@ -12,24 +12,24 @@ public class LukeRulesScorer implements Scorer {
 
     @Override
     public ScoringResult score(List<Integer> rolls) {
-        Map<Integer, Integer> counts = countDice(rolls);
+        Map<Integer, Integer> faceCounts = countDice(rolls);
 
         int score = 0;
 
         // Consider and remove all sets of 3.
-        score += scoreAndRemoveTriples(counts);
+        score += scoreAndRemoveTriples(faceCounts);
 
         // Single 1's
-        score += scoreAndRemoveIndividuals(1, 100, counts);
+        score += scoreAndRemoveIndividuals(1, 100, faceCounts);
 
         // Single 5's
-        score += scoreAndRemoveIndividuals(5, 50, counts);
+        score += scoreAndRemoveIndividuals(5, 50, faceCounts);
 
         int remainingDice;
         if (score == 0) {
             remainingDice = 0;
         } else {
-            remainingDice = countRemainingDice(counts);
+            remainingDice = countRemainingDice(faceCounts);
             if (remainingDice == 0) {
                 remainingDice = MAX_ROLLABLE_DICE;
             }
@@ -71,6 +71,9 @@ public class LukeRulesScorer implements Scorer {
         return remainingDice;
     }
 
+    /**
+     * Would convert [1,1,3,4,5] to Map(1->2, 2->0, 3->1, 4->1, 5->1, 6->0).
+     */
     private Map<Integer, Integer> countDice(List<Integer> rolls) {
         Map<Integer, Integer> counts = new HashMap<Integer, Integer>();
         for (int i = MIN_DIE_VALUE; i <= MAX_DIE_VALUE; i++) {
