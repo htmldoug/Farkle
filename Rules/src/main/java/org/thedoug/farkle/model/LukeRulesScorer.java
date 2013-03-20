@@ -48,19 +48,22 @@ public class LukeRulesScorer implements Scorer {
     private int scoreAndRemoveTriples(Map<Integer, Integer> counts) {
         int triplesScore = 0;
         for (Map.Entry<Integer, Integer> entry : counts.entrySet()) {
-            Integer dieOption = entry.getKey();
+            Integer dieValue = entry.getKey();
 
             while (entry.getValue() >= 3) {
-                if (dieOption == 1) {
-                    triplesScore += 1000;
-                } else {
-                    triplesScore += 100 * dieOption;
-                }
-
+                triplesScore += scoreForTriple(dieValue);
                 entry.setValue(entry.getValue() - 3);
             }
         }
         return triplesScore;
+    }
+
+    private int scoreForTriple(int dieValue) {
+        if (dieValue == 1) {
+            return 1000;
+        } else {
+            return 100 * dieValue;
+        }
     }
 
     private int countRemainingDice(Map<Integer, Integer> counts) {
