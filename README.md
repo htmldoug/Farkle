@@ -14,7 +14,7 @@ Run FarkleDriver. Modify the source to add or remove players.
 
 Implementing a Player
 ---------------------
-Create a class that implements Player. Optionally extend AbstractPlayer for a nice toString.
+Create a class that extends AbstractPlayer, or implement Player and provide your own toString.
 
 Submitting a Player
 -------------------
