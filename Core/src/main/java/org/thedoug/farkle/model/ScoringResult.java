@@ -17,6 +17,13 @@ public class ScoringResult {
         return remainingDice;
     }
 
+    /**
+     * @return true if the player has "Farkled", i.e. cannot roll again.
+     */
+    public boolean isFarkled() {
+        return remainingDice <= 0;
+    }
+
     @Override
     public String toString() {
         return "ScoringResult(" + score + ", " + remainingDice + ")";

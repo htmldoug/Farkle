@@ -71,7 +71,7 @@ public class FarkleEngine {
         ScoringResult result = scorer.score(rolls);
 
         GameState nextState;
-        if (result.getScore() == 0) {
+        if (result.isFarkled()) {
             nextState = new GameState(new Turn(0, 0, nextRollIteration));
         } else {
             int previousScore = previous.turnInfo().getScoredPoints();
