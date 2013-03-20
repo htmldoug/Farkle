@@ -28,7 +28,7 @@ public class InstrumentedPlayer implements Player {
     }
 
     public int averageTimePerDecisionInMillis() {
-        return (int) msSpent / decisions;
+        return decisions == 0 ? 0 : (int) msSpent / decisions;
     }
 
     @Override
