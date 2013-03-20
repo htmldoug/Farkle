@@ -28,4 +28,21 @@ public class ScoringResult {
     public String toString() {
         return "ScoringResult(" + score + ", " + remainingDice + ")";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ScoringResult)) return false;
+
+        ScoringResult that = (ScoringResult) o;
+
+        return remainingDice == that.remainingDice && score == that.score;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = score;
+        result = 31 * result + remainingDice;
+        return result;
+    }
 }
