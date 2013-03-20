@@ -27,16 +27,12 @@ public class InstrumentedPlayer implements Player {
         return response;
     }
 
-    public int averageTimePerDecisionInMillis() {
-        return decisions == 0 ? 0 : (int) msSpent / decisions;
-    }
-
     @Override
     public String toString() {
         return underlying +
                 "{decisions=" + decisions +
                 ", yesAnswers=" + yesAnswers +
-                ", msPerDecision=" + averageTimePerDecisionInMillis() +
+                ", msSpent=" + msSpent +
                 '}';
     }
 
