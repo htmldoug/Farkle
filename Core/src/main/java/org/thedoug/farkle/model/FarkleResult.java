@@ -1,5 +1,6 @@
 package org.thedoug.farkle.model;
 
+import org.thedoug.farkle.FarkleEngine;
 import org.thedoug.farkle.player.Player;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class FarkleResult {
         List<Player> winners = new ArrayList<Player>(2);
         for (Player player: scores.keySet()) {
             Integer playerScore = scores.get(player);
-            if (playerScore > 10000) {
+            if (playerScore >= FarkleEngine.MAX_SCORE) {
                 winners.add(player);
             }
         }

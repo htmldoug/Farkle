@@ -15,7 +15,7 @@ public class FarkleEngine {
 
     private Player[] players;
 
-    private static final int MAX_SCORE = 10000;
+    public static final int MAX_SCORE = 10000;
 
     private Roller roller;
 
