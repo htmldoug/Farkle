@@ -40,7 +40,6 @@ public class FarkleEngine {
                 }
 
                 updateScoreForTurn(player, gameState.turnInfo());
-                if (hasWon(player)) break;
             }
         }
 

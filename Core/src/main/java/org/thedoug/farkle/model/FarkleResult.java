@@ -2,6 +2,8 @@ package org.thedoug.farkle.model;
 
 import org.thedoug.farkle.player.Player;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class FarkleResult {
@@ -11,21 +13,17 @@ public class FarkleResult {
         this.scores = scores;
     }
 
-    public Map<Player, Integer> getScores() {
-        return scores;
-    }
-
-    public Player getWinner() {
-        Player winner = null;
-        int highestScore = 0;
+    public List<Player> getWinners() {
+        List<Player> winners = new ArrayList<Player>(2);
         for (Player player: scores.keySet()) {
             Integer playerScore = scores.get(player);
-            if (playerScore > highestScore) {
-                winner = player;
-                highestScore = playerScore;
+            if (playerScore > 10000) {
+                winners.add(player);
             }
         }
-        return winner;
+
+        assert !winners.isEmpty() : "Nobody won";
+        return winners;
     }
 
     @Override
