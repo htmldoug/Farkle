@@ -2,8 +2,7 @@ package org.thedoug.farkle;
 
 import org.thedoug.farkle.doug.DougPlayerV1;
 import org.thedoug.farkle.model.FarkleResult;
-import org.thedoug.farkle.model.LukeRulesScorer;
-import org.thedoug.farkle.model.RandomRoller;
+import org.thedoug.farkle.model.LukeRules;
 import org.thedoug.farkle.player.*;
 
 public class FarkleDriver {
@@ -11,11 +10,10 @@ public class FarkleDriver {
     public static final int NUM_MATCHES = 10000;
 
     public static void main(String[] args) {
-        RandomRoller rollStrategy = new RandomRoller();
-        LukeRulesScorer scorer = new LukeRulesScorer();
+        LukeRules rules = new LukeRules();
 
         Player[] players = InstrumentedPlayer.instrumentAll(new Player[]{
-                new DougPlayerV1(),
+                new DougPlayerV1(rules),
                 new RollIfAtLeastNRemainingDicePlayer(2),
                 new RollIfAtLeastNRemainingDicePlayer(3),
                 new RollIfAtLeastNRemainingDicePlayer(4),
@@ -27,7 +25,7 @@ public class FarkleDriver {
 
         PeriodicProgressReporter progressReporter = new PeriodicProgressReporter();
         for (int i = 0; i < NUM_MATCHES; i++) {
-            FarkleEngine gameEngine = new FarkleEngine(rollStrategy, scorer, players);
+            FarkleEngine gameEngine = new FarkleEngine(rules, players);
             FarkleResult singleMatchResult = gameEngine.run();
             totalScores.add(singleMatchResult);
 

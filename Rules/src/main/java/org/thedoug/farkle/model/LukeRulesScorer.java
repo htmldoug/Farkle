@@ -1,19 +1,26 @@
 package org.thedoug.farkle.model;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class LukeRulesScorer implements Scorer {
+// TODO separate out farkleing knowledge into a PostScoringRules for more flexibility
 
     public static final int MAX_ROLLABLE_DICE = 5;
     public static final int MIN_DIE_VALUE = 1;
     public static final int MAX_DIE_VALUE = 6;
 
+    private FaceCounter faceCounter = new FaceCounter(MIN_DIE_VALUE, MAX_DIE_VALUE);
+
     @Override
     public ScoringResult score(List<Integer> rolls) {
-        Map<Integer, Integer> faceCounts = countDice(rolls);
+        FaceCounter.FaceCount faceCounts = faceCounter.count(rolls);
+        int score = scoreAndRemoveScoringDice(faceCounts);
 
+        ScoringResult result = determineResult(faceCounts, score);
+        return result;
+    }
+
+    private int scoreAndRemoveScoringDice(FaceCounter.FaceCount faceCounts) {
         int score = 0;
 
         // Consider and remove all sets of 3.
@@ -24,35 +31,23 @@ public class LukeRulesScorer implements Scorer {
 
         // Single 5's
         score += scoreAndRemoveIndividuals(5, 50, faceCounts);
-
-        int remainingDice;
-        if (score == 0) {
-            remainingDice = 0;
-        } else {
-            remainingDice = countRemainingDice(faceCounts);
-            if (remainingDice == 0) {
-                remainingDice = MAX_ROLLABLE_DICE;
-            }
-        }
-
-        return new ScoringResult(score, remainingDice);
+        return score;
     }
 
-    private int scoreAndRemoveIndividuals(int dieOption, int valueForEach, Map<Integer, Integer> counts) {
-        int individualScore = 0;
-        individualScore += counts.get(dieOption) * valueForEach;
+    private int scoreAndRemoveIndividuals(int dieOption, int valueForEach, FaceCounter.FaceCount counts) {
+        int individualScore = counts.get(dieOption) * valueForEach;
         counts.put(dieOption, 0);
         return individualScore;
     }
 
-    private int scoreAndRemoveTriples(Map<Integer, Integer> counts) {
+    private int scoreAndRemoveTriples(FaceCounter.FaceCount counts) {
         int triplesScore = 0;
-        for (Map.Entry<Integer, Integer> entry : counts.entrySet()) {
-            Integer dieValue = entry.getKey();
 
-            while (entry.getValue() >= 3) {
-                triplesScore += scoreForTriple(dieValue);
-                entry.setValue(entry.getValue() - 3);
+        for (Integer face : counts) {
+            int count;
+            while ((count = counts.get(face)) >= 3) {
+                triplesScore += scoreForTriple(face);
+                counts.put(face, count - 3);
             }
         }
         return triplesScore;
@@ -66,29 +61,22 @@ public class LukeRulesScorer implements Scorer {
         }
     }
 
-    private int countRemainingDice(Map<Integer, Integer> counts) {
-        int remainingDice = 0;
-        for (Integer remainingCount : counts.values()) {
-            remainingDice += remainingCount;
+    private ScoringResult determineResult(FaceCounter.FaceCount faceCounts, int score) {
+        ScoringResult result;
+        if (score == 0) {
+            result = ScoringResult.FARKLED;
+        } else {
+            result = new ScoringResult(score, determineRemainingDice(faceCounts));
         }
-        return remainingDice;
+        return result;
     }
 
-    /**
-     * Would convert [1,1,3,4,5] to Map(1->2, 2->0, 3->1, 4->1, 5->1, 6->0).
-     */
-    private Map<Integer, Integer> countDice(List<Integer> rolls) {
-        Map<Integer, Integer> counts = new HashMap<Integer, Integer>();
-        for (int i = MIN_DIE_VALUE; i <= MAX_DIE_VALUE; i++) {
-            counts.put(i, 0);
+    private int determineRemainingDice(FaceCounter.FaceCount faceCounts) {
+        int remainingDice = faceCounts.totalCounts();
+        if (remainingDice == 0) {
+            // "hot dice", player may roll all dice again.
+            remainingDice = MAX_ROLLABLE_DICE;
         }
-        for (Integer roll: rolls) {
-            Integer old = counts.get(roll);
-            if (old == null) {
-                old = 0;
-            }
-            counts.put(roll, old + 1);
-        }
-        return counts;
+        return remainingDice;
     }
 }

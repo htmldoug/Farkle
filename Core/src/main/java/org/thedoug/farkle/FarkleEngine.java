@@ -15,18 +15,17 @@ public class FarkleEngine {
 
     private Player[] players;
 
-    public static final int MAX_SCORE = 10000;
-
-    private Roller roller;
-
-    private Scorer scorer;
+    public static final int MAX_SCORE = 10000; // TODO Refactor the winning condition into rules based upon the current state
 
     private Map<Player, Integer> scores;
 
-    public FarkleEngine(Roller roller, Scorer scorer, Player... players) {
+    private final Roller roller = new RandomRoller();
+
+    private final Rules rules;
+
+    public FarkleEngine(Rules rules, Player... players) {
         this.players = players;
-        this.roller = roller;
-        this.scorer = scorer;
+        this.rules = rules;
         this.scores = getInitialScores(players);
     }
 
@@ -35,7 +34,7 @@ public class FarkleEngine {
             for (Player player : players) {
                 GameState gameState = rollAndStuff(new GameState());
 
-                while(gameState.canRollAgain() && player.shouldRollAgain(gameState)) {
+                while (gameState.canRollAgain() && player.shouldRollAgain(gameState)) {
                     gameState = rollAndStuff(gameState);
                 }
 
@@ -67,7 +66,7 @@ public class FarkleEngine {
         int nextRollIteration = previous.turnInfo().getRollIteration() + 1;
 
         List<Integer> rolls = rollSomeDice(previous.turnInfo().getRemainingDice());
-        ScoringResult result = scorer.score(rolls);
+        ScoringResult result = rules.getScorer().score(rolls);
 
         GameState nextState;
         if (result.isFarkled()) {
@@ -96,7 +95,7 @@ public class FarkleEngine {
     }
 
     private boolean somePlayerHasWon() {
-        for (Player player: players) {
+        for (Player player : players) {
             if (hasWon(player)) {
                 return true;
             }

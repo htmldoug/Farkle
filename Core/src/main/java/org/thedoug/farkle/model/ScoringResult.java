@@ -1,6 +1,13 @@
 package org.thedoug.farkle.model;
 
 public class ScoringResult {
+    /**
+     * Result for when the player has Farkled (i.e. rolled zero points), and may not roll again.
+     * <p/>
+     * TODO Farkling is a rules concept. Consider moving any knowledge of farkling into rulesy stuff.
+     */
+    public static final ScoringResult FARKLED = new ScoringResult(0, 0);
+
     private int score;
     private int remainingDice;
 
