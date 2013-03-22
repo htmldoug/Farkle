@@ -2,7 +2,7 @@ package org.thedoug.farkle.model;
 
 import java.util.Random;
 
-public class RandomRoller implements Roller {
+public class RandomRoller extends Roller {
 
     private final int min;
     private final int max;

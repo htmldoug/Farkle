@@ -1,8 +1,9 @@
 package org.thedoug.farkle.player;
 
-import org.thedoug.farkle.model.GameState;
+import org.thedoug.farkle.model.GameContext;
+import org.thedoug.farkle.model.Turn;
 
-public class RollIfAtLeastNRemainingDicePlayer implements Player {
+public class RollIfAtLeastNRemainingDicePlayer extends AbstractPlayer {
     int minDiceToRoll;
 
     public RollIfAtLeastNRemainingDicePlayer(int minDiceToRoll) {
@@ -10,12 +11,12 @@ public class RollIfAtLeastNRemainingDicePlayer implements Player {
     }
 
     @Override
-    public boolean shouldRollAgain(GameState gameState) {
-        return gameState.turnInfo().getRemainingDice() >= minDiceToRoll;
+    public boolean shouldRollAgain(GameContext gameContext, Turn turn) {
+        return turn.getRemainingDice() >= minDiceToRoll;
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" + minDiceToRoll + ")";
+        return super.toString() + "(" + minDiceToRoll + ")";
     }
 }

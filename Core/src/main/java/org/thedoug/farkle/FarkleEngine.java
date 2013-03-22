@@ -3,7 +3,7 @@ package org.thedoug.farkle;
 import org.thedoug.farkle.model.*;
 import org.thedoug.farkle.player.Player;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,36 +13,41 @@ import java.util.Map;
  */
 public class FarkleEngine {
 
+    private final GameContexts gameContexts;
+
     private Player[] players;
 
-    public static final int MAX_SCORE = 10000; // TODO Refactor the winning condition into rules based upon the current state
-
-    private Map<Player, Integer> scores;
+    private final Map<Player, Integer> scores;
 
     private final Roller roller = new RandomRoller();
 
     private final Rules rules;
 
+    private final Turn INITIAL_TURN;
+
     public FarkleEngine(Rules rules, Player... players) {
         this.players = players;
         this.rules = rules;
         this.scores = getInitialScores(players);
+        this.gameContexts = new GameContexts(players);
+
+        this.INITIAL_TURN = new Turn(0, rules.getNumDice(), 0);
     }
 
     public FarkleResult run() {
         while (!somePlayerHasWon()) {
             for (Player player : players) {
-                GameState gameState = rollAndStuff(new GameState());
+                Turn turn = roll(INITIAL_TURN);
 
-                while (gameState.canRollAgain() && player.shouldRollAgain(gameState)) {
-                    gameState = rollAndStuff(gameState);
+                while (turn.canRollAgain() && player.shouldRollAgain(gameContexts.forPlayer(player), turn)) {
+                    turn = roll(turn);
                 }
 
-                updateScoreForTurn(player, gameState.turnInfo());
+                updateScoreForTurn(player, turn);
             }
         }
 
-        return new FarkleResult(scores);
+        return new FarkleResult(rules, scores);
     }
 
     private void updateScoreForTurn(Player player, Turn turnInfo) {
@@ -60,38 +65,30 @@ public class FarkleEngine {
         return initialScores;
     }
 
-    private GameState rollAndStuff(GameState previous) {
-        assert previous.canRollAgain();
+    private Turn roll(Turn previousState) {
+        assert previousState.canRollAgain();
 
-        int nextRollIteration = previous.turnInfo().getRollIteration() + 1;
+        int nextRollIteration = previousState.getRollIteration() + 1;
 
-        List<Integer> rolls = rollSomeDice(previous.turnInfo().getRemainingDice());
+        List<Integer> rolls = roller.rollDice(previousState.getRemainingDice());
         ScoringResult result = rules.getScorer().score(rolls);
 
-        GameState nextState;
+        Turn nextState;
         if (result.isFarkled()) {
-            nextState = new GameState(new Turn(0, 0, nextRollIteration));
+            nextState = Turn.farkled(nextRollIteration);
         } else {
-            int previousScore = previous.turnInfo().getScoredPoints();
+            int previousScore = previousState.getScoredPoints();
             int newScore = previousScore + result.getScore();
 
-            nextState = new GameState(new Turn(newScore, result.getRemainingDice(), nextRollIteration));
+            nextState = new Turn(newScore, result.getRemainingDice(), nextRollIteration);
         }
 
         return nextState;
     }
 
-    private List<Integer> rollSomeDice(int diceToRoll) {
-        List<Integer> rolls = new ArrayList<Integer>();
-        for (int i = 0; i < diceToRoll; i++) {
-            int result = roller.rollSingleDie();
-            rolls.add(result);
-        }
-        return rolls;
-    }
 
     private boolean hasWon(Player player) {
-        return scores.get(player) >= MAX_SCORE;
+        return scores.get(player) >= rules.getWinningScore();
     }
 
     private boolean somePlayerHasWon() {
@@ -101,5 +98,22 @@ public class FarkleEngine {
             }
         }
         return false;
+    }
+
+    private class GameContexts {
+        private final Map<Player, GameContext> cache;
+
+        public GameContexts(Player[] players) {
+            Map<Player, Integer> scoresView = Collections.unmodifiableMap(scores);
+
+            cache = new HashMap<Player, GameContext>(players.length);
+            for (Player player : players) {
+                cache.put(player, new GameContext(player, rules, scoresView));
+            }
+        }
+
+        public GameContext forPlayer(Player player) {
+            return cache.get(player);
+        }
     }
 }
