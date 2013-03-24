@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Tallied scores from multiple Farkle matches.
+ * Tallied wins from multiple Farkle matches.
  */
-public class AggregatedScores {
+public class WinsTally {
     // TODO switch Map to identity in case somebody implements equals() {return true}
-    private Map<Player, Integer> scores;
+    private final Map<Player, Integer> wins;
 
-    public AggregatedScores(Player[] players) {
-        scores = initialScores(players);
+    public WinsTally(Player[] players) {
+        wins = initialScores(players);
     }
 
     private Map<Player, Integer> initialScores(Player[] players) {
@@ -29,12 +29,12 @@ public class AggregatedScores {
     public void add(FarkleResult result) {
         List<Player> winners = result.getWinners();
         for (Player winner : winners) {
-            scores.put(winner, scores.get(winner) + 1);
+            wins.put(winner, wins.get(winner) + 1);
         }
     }
 
     public void printReport() {
-        for (Map.Entry<Player, Integer> score : scores.entrySet()) {
+        for (Map.Entry<Player, Integer> score : wins.entrySet()) {
             System.out.println(score.getValue() + " wins : " + score.getKey());
         }
     }
