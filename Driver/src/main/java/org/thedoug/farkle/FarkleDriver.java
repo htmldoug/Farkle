@@ -1,5 +1,6 @@
 package org.thedoug.farkle;
 
+import org.lab304.farlke.player.BrandonPlayer;
 import org.thedoug.farkle.doug.DougPlayerV1;
 import org.thedoug.farkle.doug.DougPlayerV2;
 import org.thedoug.farkle.doug.DougPlayerV3;
@@ -15,6 +16,7 @@ public class FarkleDriver {
         LukeRules rules = new LukeRules();
 
         Player[] players = InstrumentedPlayer.instrumentAll(new Player[]{
+                new BrandonPlayer(),
                 new DougPlayerV1(rules),
                 new DougPlayerV2(rules),
                 new DougPlayerV3(rules),
